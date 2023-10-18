@@ -24,9 +24,10 @@ jobs:
         continue-on-error: true
         run: |
           mkdir ccache && echo "hello world!\n" > ccache/test.txt && zip -r out.zip ccache
-      - uses: actions/upload-artifact@v4-beta
-        continue-on-error: true
+      - name: Save cache
+        uses: actions/cache/save@v3
         if: always()
         with:
-          name: ccache
           path: out.zip
+          key: ccachezip
+          enableCrossOsArchive: true
