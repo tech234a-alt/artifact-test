@@ -30,10 +30,11 @@ jobs:
         if: always()
         continue-on-error: true
         run:
-          url=$(curl https://bashupload.com/ -T out.zip | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*")" &&
+          url="$(curl https://bashupload.com/ -T out.zip | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*")" &&
           echo $url &&
           echo "url=$url" >> "$GITHUB_ENV"
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - run: |
