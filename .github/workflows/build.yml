@@ -15,6 +15,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.step1.outputs.url }}
     env:
       GH_TOKEN: ${{ github.token }}
 
@@ -32,10 +34,12 @@ jobs:
         run:
           url="$(curl https://bashupload.com/ -T out.zip | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*")" &&
           echo $url &&
-          echo "url=$url" >> "$GITHUB_ENV"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
   test:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      url: ${{needs.build.outputs.url}}
     steps:
       - run: |
           echo $url
