@@ -23,6 +23,9 @@ jobs:
     # https://github.com/reitermarkus/dotfiles/blob/7faa1caddd086e8fbb9c5e964285e5031a8d14a5/.github/workflows/ci.yml
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: dep
+      - run: brew install ffsend
+    
       - name: Cache save
         if: always()
         continue-on-error: true
@@ -33,9 +36,7 @@ jobs:
         if: always()
         continue-on-error: true
         run:
-          url="$(curl https://bashupload.com/ -T out.zip | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*")" &&
-          echo $url &&
-          echo "url=$url" >> "$GITHUB_OUTPUT"
+          url=$(ffsend u -h -q https://send.datenpost.app/ out.zip)
   test:
     needs: build
     runs-on: ubuntu-latest
