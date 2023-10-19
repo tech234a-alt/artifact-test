@@ -36,7 +36,7 @@ jobs:
         if: always()
         continue-on-error: true
         run:
-          url=$(ffsend u --verbose -f -h https://send.datenpost.app/ out.zip)
+          url=$(ffsend --verbose -f -h u https://send.datenpost.app/ out.zip)
   test:
     needs: build
     runs-on: ubuntu-latest
