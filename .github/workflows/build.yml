@@ -24,7 +24,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: dep
-      - run: brew install ffsend
+        run: brew install ffsend
     
       - name: Cache save
         if: always()
