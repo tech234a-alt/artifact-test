@@ -36,7 +36,7 @@ jobs:
         if: always()
         continue-on-error: true
         run:
-          url=$(fsend u -q -f -h https://send.datenpost.app/ out.zip) &&
+          url=$(ffsend u -q -f -h https://send.datenpost.app/ out.zip) &&
           echo $url &&
           echo "url=$url" >> "$GITHUB_OUTPUT"
   test:
