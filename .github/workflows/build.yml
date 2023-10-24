@@ -41,7 +41,7 @@ jobs:
           echo "url=$url" >> "$GITHUB_OUTPUT"
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     env:
       url: ${{needs.build.outputs.url}}
     steps:
