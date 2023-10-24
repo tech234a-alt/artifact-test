@@ -46,4 +46,4 @@ jobs:
       url: ${{needs.build.outputs.url}}
     steps:
       - run: |
-          echo $url
+          brew install ffsend && ffsend download $url
