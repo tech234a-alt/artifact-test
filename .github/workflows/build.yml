@@ -15,18 +15,35 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: macos-13
+    outputs:
+      url: ${{ steps.main.outputs.url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     # https://github.com/reitermarkus/dotfiles/blob/7faa1caddd086e8fbb9c5e964285e5031a8d14a5/.github/workflows/ci.yml
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: dep
+        run: brew install ffsend
+    
       - name: Cache save
         if: always()
         continue-on-error: true
         run: |
           mkdir ccache && echo "hello world!\n" > ccache/test.txt && zip -r out.zip ccache
-      - uses: actions/upload-artifact@v4-beta
-        continue-on-error: true
+      - name: Upload ccache
+        id: main
         if: always()
-        with:
-          name: ccache
-          path: out.zip
+        continue-on-error: true
+        run:
+          url=$(ffsend u -q -f -h https://send.datenpost.app/ out.zip) &&
+          echo $url &&
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      url: ${{needs.build.outputs.url}}
+    steps:
+      - run: |
+          echo $url
